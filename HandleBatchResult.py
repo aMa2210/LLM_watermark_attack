@@ -6,31 +6,42 @@ import json
 import re
 
 def main():
-    subset_names = ['ar','bn','de','en','fr','hi','id','it','ja','ko','pt','es','sw','yo','zh']
+    # subset_names = ['ar','bn','de','en','fr','hi','id','it','ja','ko','pt','es','sw','yo','zh']
+    # prefix = 'gpqa'
+    # subset_names = ['gpqa_main']
 
-    data_file = [f'Global_MMLU/{subset}.csv' for subset in subset_names]
+    prefix = 'MMLU_pro'
+    subset_names = ['MMLU-Pro_train_business']
+
+    data_file = [f'{prefix}/{subset}.csv' for subset in subset_names]
     # input_file_name = "BatchResults/test.jsonl"
-    input_file_names = [f"BatchResults/{subset_name}_Original.jsonl" for subset_name in subset_names] + \
+    input_file_names = [f"BatchResults/{subset_name}_OriginalCoT.jsonl" for subset_name in subset_names] + \
                        [f"BatchResults/{subset_name}_TwoSpaces.jsonl" for subset_name in subset_names] + \
                        [f"BatchResults/{subset_name}_Emojis.jsonl" for subset_name in subset_names] + \
                        [f"BatchResults/{subset_name}_CapitalLetters.jsonl" for subset_name in subset_names]
-    output_file_names = [f"Results/{subset_name}_Original.csv" for subset_name in subset_names] + \
-                       [f"Results/{subset_name}_TwoSpaces.csv" for subset_name in subset_names] + \
-                       [f"Results/{subset_name}_Emojis.csv" for subset_name in subset_names] + \
-                       [f"Results/{subset_name}_CapitalLetters.csv" for subset_name in subset_names]
+    output_file_names = [f"Results/{subset_name}_gpt4o-mini_OriginalCoT.csv" for subset_name in subset_names] + \
+                       [f"Results/{subset_name}_gpt4o-mini_TwoSpaces.csv" for subset_name in subset_names] + \
+                       [f"Results/{subset_name}_gpt4o-mini_Emojis.csv" for subset_name in subset_names] + \
+                       [f"Results/{subset_name}_gpt4o-mini_CapitalLetters.csv" for subset_name in subset_names]
     i=0
     for input_file_name,output_file_name in zip(input_file_names,output_file_names):
     # output_file_name = "Results/test.csv"
-        df = pd.read_csv(data_file[i % 15])
+        df = pd.read_csv(data_file[0])
         i+=1
         with open(input_file_name, 'r') as file:
             for line in file:
                 # Parsing the JSON string into a dict and appending to the list of results
                 json_object = json.loads(line.strip())
                 text = json_object["response"]["body"]["choices"][0]["message"]["content"]
-                df.loc[df['sample_id'] == json_object['custom_id'], 'gpt4o-mini_rawtext'] = text
+
+                index = int(json_object['custom_id'].replace('index_',''))
+                df.loc[index, 'gpt4o-mini_rawtext'] = text
+
                 if extract_last_single_quoted(text) is not None:
-                    df.loc[df['sample_id'] == json_object['custom_id'], 'gpt4o-mini'] = extract_last_single_quoted(text).strip().lower()
+                    df.loc[index, 'gpt4o-mini'] = extract_last_single_quoted(text).strip().lower()
+
+                # if extract_last_single_quoted(text) is not None:
+                #     df.loc[df['sample_id'] == json_object['custom_id'], 'gpt4o-mini'] = extract_last_single_quoted(text).strip().lower()
 
         df.to_csv(output_file_name, index=False)
         print(f'saved to {output_file_name}')
