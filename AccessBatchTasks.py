@@ -3,7 +3,7 @@ import datetime
 import requests
 
 client = openai.OpenAI()
-number = 5
+number = 10
 batch_jobs = client.batches.list(limit=number)
 i = 0
 for job in batch_jobs:

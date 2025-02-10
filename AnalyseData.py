@@ -240,14 +240,19 @@ def getAccuracy(filename):
         # df['predicted'] = df[['a', 'b', 'c', 'd','e', 'f', 'g', 'h', 'i', 'j']].idxmax(axis=1)
         if 'gpt4o-mini' in filename:
             df['predicted'] = df['gpt4o-mini'].str.lower()
-        elif 'claude-3-haiku-20240307':
+        elif 'claude-3-haiku-20240307' in filename:
             df['predicted'] = df['claude-3-haiku-20240307'].str.lower()
+        elif 'gpt4o' in filename:
+            df['predicted'] = df['gpt4o'].str.lower()
+        elif 'claude-3-5-sonnet-20241022' in filename:
+            df['predicted'] = df['claude-3-5-sonnet-20241022'].str.lower()
 
         # calculate accuracy
         # correct_predictions = (df['predicted'] == df['answer_index'].map(answer_map)).sum()
         correct_predictions = (df['predicted'] == df['answer'].str.lower()).sum()
         total_predictions = len(df)
         # print(total_predictions)
+        count_non_none = df['predicted'].notna().sum()
         accuracy = correct_predictions / total_predictions
         print(accuracy)
         print('&&&&&&')

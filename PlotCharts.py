@@ -39,10 +39,10 @@ def main():
     model_names = ['GPT-4o-mini','GPT-4o','Llama-3.1-8B-Instruct','Llama-3.2-11B-Vision-Instruct','gemma-2-9b-it','Mistral-7B-Instruct-v0.3','Yi-1.5-9B-Chat']
     # subset_names = ['ar', 'bn', 'de', 'en', 'fr', 'hi', 'id', 'it', 'ja', 'ko', 'pt', 'es', 'sw', 'yo', 'zh']
     # prefixs = ['Results/' + subset_name for subset_name in subset_names]
-    # subset_names = ['gpqa_main']
-    subset_names = ['MMLU-Pro_train_business']
-    model_names = ['_gpt4o-mini', '_claude-3-haiku-20240307']
+    model_names = ['_gpt4o','_gpt4o-mini', '_claude-3-haiku-20240307','_claude-3-5-sonnet-20241022']
+    subset_names = ['gpqa_main']
     # prefixs = ['Results/gpqa/' + subset_name + model_name for subset_name in subset_names for model_name in model_names]
+    subset_names = ['MMLU-Pro_train_business']
     prefixs = ['Results/MMLU_pro/' + subset_name + model_name for subset_name in subset_names for model_name in model_names]
     filenames = [f"_OriginalCoT.csv"]+[f"_CapitalLetters.csv"]\
                       +[f"_Emojis.csv"]+[f"_TwoSpaces.csv"]
@@ -55,13 +55,14 @@ def main():
                    'Mistral-7B', 'Yi-1.5-9B']
     # model_names = ['GPT-4o-mini','llama3.1-8B','llama3-70B']
     # model_names = ['ar', 'bn', 'de', 'en', 'fr', 'hi', 'id', 'it', 'ja', 'ko', 'pt', 'es', 'sw', 'yo', 'zh']
-    model_names = ['GPT-4o-mini', 'claude-3-haiku-20240307']
+    model_names = ['GPT-4o','GPT-4o-mini', 'Claude-3-haiku', 'Claude-3.5-sonnet']
     # for filename,model_name in zip(filenames,model_names):
     #     filename = [filename]
     #     model_name = [model_name]
     #     plotAccuracy_AllDataset(filenames=filename, model_names=model_name,
     #                             legends=['Original', 'Capital letters', 'Emojis', 'Two spaces'], xlabel_name='language')
-    plotAccuracy_AllDataset(filenames=filenames,model_names=model_names,legends=['Original','Capital letters','Emojis','Two spaces'], xlabel_name='language')
+    # plotAccuracy_AllDataset(filenames=filenames,model_names=model_names,legends=['Original','Capital letters','Emojis','Two spaces'], xlabel_name='language')
+    plotAccuracy_AllDataset(filenames=filenames,model_names=model_names,legends=['Original','Capital letters','Emojis','Two spaces'], xlabel_name='Model Name',pos='upper left')
 
 
 
@@ -445,7 +446,7 @@ def plotHistogramsWrong(filenames_direct,filenames_think):
 
 
 
-def plotAccuracy_AllDataset(filenames, model_names,legends, xlabel_name = 'Model name'):
+def plotAccuracy_AllDataset(filenames, model_names,legends, xlabel_name = 'Model name', pos = 'best'):
     accuracy_list = []
     for filename in filenames:
         data_tmp = []
@@ -453,7 +454,7 @@ def plotAccuracy_AllDataset(filenames, model_names,legends, xlabel_name = 'Model
             data_tmp.append(getAccuracy(csvname))
         accuracy_list.append(data_tmp)
 
-    plotBarComparison_all(xlabel_name=xlabel_name, data=accuracy_list,labels=model_names,legends=legends)
+    plotBarComparison_all(xlabel_name=xlabel_name, data=accuracy_list,labels=model_names,legends=legends, pos = pos)
 
 
 

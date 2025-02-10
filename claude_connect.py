@@ -9,8 +9,8 @@ def main():
     # file_name = 'anatomy'
     # file_name = 'college_biology'
 
-    # file_name = ['MMLU_pro/MMLU-Pro_train_business.csv']
-    file_name = ['gpqa/gpqa_main.csv']
+    file_name = ['MMLU_pro/MMLU-Pro_train_business.csv']
+    # file_name = ['gpqa/gpqa_main.csv']
     originalCoT(file_name)
     two_spaces(file_name)
     emojis(file_name)
@@ -89,14 +89,15 @@ THEREFORE, THE CORRECT ANSWER IS {'SOL': 'B'}.
 '''
     answer(file_names, message_system, '_CapitalLetters.csv')
 def answer(file_names, message_system, suffix):
-    model_name = "claude-3-haiku-20240307"
-
+    # model_name = "claude-3-haiku-20240307"
+    model_name = 'claude-3-5-sonnet-20241022'
     client = anthropic.Anthropic()
     for file_name in file_names:
         filename_raw = file_name.split('/')[-1].replace('.csv', '')
-        result_name = f'Results/gpqa/{filename_raw}_{model_name}{suffix}'
-        # data = readQuestion_MMLU_Pro(file_name)
-        data = readQuestion_gqpa(file_name)
+        # result_name = f'Results/gpqa/{filename_raw}_{model_name}{suffix}'
+        result_name = f'Results/MMLU_pro/{filename_raw}_{model_name}{suffix}'
+        data = readQuestion_MMLU_Pro(file_name)
+        # data = readQuestion_gqpa(file_name)
         data_to_save = pd.read_csv(file_name)
         for index, prompt in tqdm(enumerate(data), total=len(data), desc="Processing prompts"):
             message = client.messages.create(
