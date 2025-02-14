@@ -1,6 +1,6 @@
 # LLM_watermark_attack
 
-This repository contains the data and scripts used for analyzing the impact of various watermark removal attacks on LLM performance. Please refer to [the paper](https://github.com/aMa2210/LLM_watermark_attack/blob/main/Understanding%20the%20Impact%20of%20Watermark%20Removal%20Prompts%20on%20LLM%20Performance.pdf) for a detailed explanation of the experimental objectives and a discussion of the results.
+This repository contains the data and scripts used for analyzing the impact of various watermark removal attacks on LLM performance. Please refer to [the paper](https://github.com/aMa2210/LLM_watermark_attack/blob/main/Understanding_the_Impact_of_Watermark_Removal_Prompts_on_LLM_Performance.pdf) for a detailed explanation of the experimental objectives and a discussion of the results.
 
 Repository Contents
 - gpqa/Global_MMLU/MMLU_pro: Datasets used in the experiments.
